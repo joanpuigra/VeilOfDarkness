@@ -1,22 +1,27 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ShadowEvent : MonoBehaviour
+namespace Shadow
 {
-    [SerializeField] private UnityEvent onShadowTrigger;
-
-    private bool _isTriggered;
-
-    private void OnTriggerEnter(Collider other)
+    public class ShadowEvent : MonoBehaviour
     {
-        if (!other.CompareTag("Player") || _isTriggered) return;
-        onShadowTrigger?.Invoke();
-        _isTriggered = true;
-    }
+        [SerializeField] private UnityEvent onShadowTrigger;
+        [SerializeField] private UnityEvent onShadowExit;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (!other.CompareTag("Player") || !_isTriggered) return;
-        _isTriggered = false;
+        private bool _isTriggered;
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("Player") || _isTriggered) return;
+            onShadowTrigger?.Invoke();
+            _isTriggered = true;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag("Player") || !_isTriggered) return;
+            onShadowExit?.Invoke();
+            _isTriggered = false;
+        }
     }
 }

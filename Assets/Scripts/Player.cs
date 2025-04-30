@@ -14,12 +14,16 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private float gravity = 9.8f;
     [SerializeField] private float cameraSensitivity = 1f;
+    [SerializeField] private Material newMaterial;
+    [SerializeField] private Material exitMaterial;
+    private Renderer playerRenderer;
 
     private Vector3 _velocity;
     private float _verticalRotation;
 
     private void OnEnable()
     {
+        playerRenderer = GetComponent<Renderer>();
         moveAction.action.Enable();
         lookAction.action.Enable();
         turnShadowAction.action.Enable();
@@ -76,6 +80,22 @@ public class Player : MonoBehaviour
         _verticalRotation = Mathf.Clamp(_verticalRotation, -80f, 80f);
 
         cameraTransform.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
+    }
+
+    public void OnShadowEnter()
+    {
+        if (playerRenderer != null && newMaterial != null)
+        {
+            playerRenderer.material = newMaterial;
+        }
+    }
+
+    public void OnShadowExit()
+    {
+        if (playerRenderer != null && exitMaterial != null)
+        {
+            playerRenderer.material = exitMaterial;
+        }
     }
     
     private void TurnShadow()
