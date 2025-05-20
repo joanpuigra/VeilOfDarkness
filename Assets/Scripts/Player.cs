@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private CharacterController controller;
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private Camera shadowCamera;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float gravity = 9.8f;
     [SerializeField] private float cameraSensitivity = 1f;
@@ -18,6 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Material exitMaterial;
     private Renderer playerRenderer;
 
+    private bool isPressed;
+    
     private Vector3 _velocity;
     private float _verticalRotation;
 
@@ -43,6 +46,7 @@ public class Player : MonoBehaviour
         MoveInput();
         LookInput();
         Gravity();
+        TurnShadow();
     }
 
     private void Gravity()
@@ -100,7 +104,20 @@ public class Player : MonoBehaviour
     
     private void TurnShadow()
     {
-        // Implement shadow turning logic here
-        Debug.Log("Shadow turned!");
+        float interact = turnShadowAction.action.ReadValue<float>();
+
+        switch (interact)
+        {
+            case > 0.5f when !isPressed:
+                Debug.Log("Shadow on!");
+                isPressed = true;
+                break;
+            case <= 0.5f when isPressed:
+                Debug.Log("Shadow off!");
+                isPressed = false;
+                break;
+        }
+
+        shadowCamera.gameObject.SetActive(isPressed);
     }
 }
