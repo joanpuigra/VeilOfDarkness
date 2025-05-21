@@ -7,9 +7,10 @@ public class Player : MonoBehaviour
     [SerializeField] private InputActionReference
         moveAction,
         lookAction,
-        turnShadowAction;
+        turnShadowAction,
+        jumpAction;
 
-    [SerializeField] private CharacterController controller;
+    private CharacterController controller;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Camera shadowCamera;
     [SerializeField] private float speed = 5f;
@@ -27,10 +28,12 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         playerRenderer = GetComponent<Renderer>();
+        controller = GetComponent<CharacterController>();
         moveAction.action.Enable();
         lookAction.action.Enable();
         turnShadowAction.action.Enable();
         turnShadowAction.action.performed += ctx => TurnShadow();
+        jumpAction.action.Enable();
     }
     
     private void OnDisable()
@@ -45,8 +48,16 @@ public class Player : MonoBehaviour
     {
         MoveInput();
         LookInput();
+        JumpInput();
         Gravity();
-        TurnShadow();
+    }
+
+    private void JumpInput()
+    {
+        if (jumpAction.action.triggered && controller.isGrounded)
+        {
+            _velocity.y = Mathf.Sqrt(2f * gravity);
+        }
     }
 
     private void Gravity()
@@ -88,24 +99,19 @@ public class Player : MonoBehaviour
 
     public void OnShadowEnter()
     {
-        if (playerRenderer != null && newMaterial != null)
-        {
-            playerRenderer.material = newMaterial;
-        }
+        if (!playerRenderer || !newMaterial) return;
+        playerRenderer.material = newMaterial;
     }
 
     public void OnShadowExit()
     {
-        if (playerRenderer != null && exitMaterial != null)
-        {
-            playerRenderer.material = exitMaterial;
-        }
+        if (!playerRenderer || !exitMaterial) return;
+        playerRenderer.material = exitMaterial;
     }
     
     private void TurnShadow()
     {
         float interact = turnShadowAction.action.ReadValue<float>();
-
         switch (interact)
         {
             case > 0.5f when !isPressed:
@@ -117,7 +123,6 @@ public class Player : MonoBehaviour
                 isPressed = false;
                 break;
         }
-
         shadowCamera.gameObject.SetActive(isPressed);
     }
 }
