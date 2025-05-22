@@ -3,37 +3,35 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    // Input actions added to inspector
-    [SerializeField] private InputActionReference
-        moveAction,
-        lookAction,
-        turnShadowAction,
-        jumpAction;
+    [Header("Input Actions")]
+    [SerializeField] private InputActionReference moveAction;
+    [SerializeField] private InputActionReference lookAction;
+    [SerializeField] private InputActionReference turnShadowAction;
+    [SerializeField] private InputActionReference jumpAction;
 
-    private CharacterController controller;
+    [Header("Settings")]
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Camera shadowCamera;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float gravity = 9.8f;
+    [SerializeField] private float jumpSpeed = 5f;
     [SerializeField] private float cameraSensitivity = 1f;
-    [SerializeField] private Material newMaterial;
-    [SerializeField] private Material exitMaterial;
-    private Renderer playerRenderer;
-
-    private bool isPressed;
+    // [SerializeField] private Material shadowMaterial;
+    // [SerializeField] private Material normalMaterial;
     
+    private CharacterController _controller;
+
     private Vector3 _velocity;
     private float _verticalRotation;
-
+    private bool _isPressed;
+    
     private void OnEnable()
     {
-        playerRenderer = GetComponent<Renderer>();
-        controller = GetComponent<CharacterController>();
         moveAction.action.Enable();
         lookAction.action.Enable();
-        turnShadowAction.action.Enable();
-        turnShadowAction.action.performed += ctx => TurnShadow();
         jumpAction.action.Enable();
+        turnShadowAction.action.Enable();
+        turnShadowAction.action.performed += OnShadowToggle;
     }
     
     private void OnDisable()
@@ -41,88 +39,64 @@ public class Player : MonoBehaviour
         moveAction.action.Disable();
         lookAction.action.Disable();
         turnShadowAction.action.Disable();
-        turnShadowAction.action.performed -= ctx => TurnShadow();
+        turnShadowAction.action.performed -= OnShadowToggle;
+    }
+
+    private void Awake()
+    {
+        _controller = GetComponent<CharacterController>();
     }
 
     private void Update()
     {
-        MoveInput();
-        LookInput();
-        JumpInput();
-        Gravity();
+        HandleLook();
+        HandleMovement();
     }
 
-    private void JumpInput()
+    private void HandleLook()
     {
-        if (jumpAction.action.triggered && controller.isGrounded)
-        {
-            _velocity.y = Mathf.Sqrt(2f * gravity);
-        }
+        Vector2 lookInput = lookAction.action.ReadValue<Vector2>();
+        if (lookInput.sqrMagnitude < 0.01f) return;
+        
+        transform.Rotate(Vector3.up, lookInput.x * cameraSensitivity);
+
+        _verticalRotation -= lookInput.y * cameraSensitivity;
+        _verticalRotation = Mathf.Clamp(_verticalRotation, -80f, 80f);
+        cameraTransform.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
     }
 
-    private void Gravity()
+    private void HandleMovement()
     {
-        // Controls velocity based on gravity
-        if (controller.isGrounded)
+        Vector2 input = moveAction.action.ReadValue<Vector2>();
+        Vector3 move = transform.right * input.x + transform.forward * input.y;
+        move *= speed;
+
+        // Apply gravity
+        if (_controller.isGrounded)
         {
             _velocity.y = -gravity * Time.deltaTime;
+            if (jumpAction.action.triggered) _velocity.y = jumpSpeed;
         }
         else
         {
             _velocity.y -= gravity * Time.deltaTime;
         }
-        controller.Move(_velocity * Time.deltaTime);
-    }
-
-    private void MoveInput()
-    {
-        Vector2 moveInput = moveAction.action.ReadValue<Vector2>();
-        Vector3 move = new(moveInput.x, 0, moveInput.y);
-        controller.Move(move * (speed * Time.deltaTime));
-    }
-
-    private void LookInput()
-    {
-        Vector2 lookInput = lookAction.action.ReadValue<Vector2>();
-        if ((lookInput.sqrMagnitude < 0.01f)) return;
         
-        // Horizontal rotation
-        float horizontalRotation = lookInput.x * cameraSensitivity;
-        transform.Rotate(Vector3.up, horizontalRotation);
-
-        // Vertical rotation
-        _verticalRotation -= lookInput.y * cameraSensitivity;
-        _verticalRotation = Mathf.Clamp(_verticalRotation, -80f, 80f);
-
-        cameraTransform.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
+        // Move character
+        move += _velocity;
+        _controller.Move(move * Time.deltaTime);
     }
 
-    public void OnShadowEnter()
-    {
-        if (!playerRenderer || !newMaterial) return;
-        playerRenderer.material = newMaterial;
-    }
-
-    public void OnShadowExit()
-    {
-        if (!playerRenderer || !exitMaterial) return;
-        playerRenderer.material = exitMaterial;
-    }
-    
-    private void TurnShadow()
+    private void OnShadowToggle(InputAction.CallbackContext context)
     {
         float interact = turnShadowAction.action.ReadValue<float>();
-        switch (interact)
+        bool newState = interact > 0.5f;
+       
+        if (newState != _isPressed)
         {
-            case > 0.5f when !isPressed:
-                Debug.Log("Shadow on!");
-                isPressed = true;
-                break;
-            case <= 0.5f when isPressed:
-                Debug.Log("Shadow off!");
-                isPressed = false;
-                break;
+            _isPressed = newState;
+            shadowCamera.gameObject.SetActive(_isPressed);
+            Debug.Log(_isPressed ? "Shadow on!" : "Shadow off!");
         }
-        shadowCamera.gameObject.SetActive(isPressed);
     }
 }
