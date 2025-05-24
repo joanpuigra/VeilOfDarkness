@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player_BK : MonoBehaviour
 {
     [Header("Input Actions")]
     [SerializeField] private InputActionReference moveAction;
@@ -16,8 +16,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float gravity = 9.8f;
     [SerializeField] private float jumpSpeed = 5f;
     [SerializeField] private float cameraSensitivity = 1f;
-    // [SerializeField] private Material shadowMaterial;
-    // [SerializeField] private Material normalMaterial;
     
     private CharacterController _controller;
 
