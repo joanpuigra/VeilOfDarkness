@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 83d0b7db2a9f64af78c7891530887227
+guid: a77bb74ca99b84e3f9aae8e3e7fd6df5
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,13 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: BC_Pink
-    second: {fileID: 2100000, guid: ead28ab52706441b3a4b567b2d99fe05, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: BC_Purple
-    second: {fileID: 2100000, guid: fc6d81e29907044fbb3151564bd4b861, type: 2}
+      name: BC_Black
+    second: {fileID: 2100000, guid: d62a13dc4254b4ddc826fa3de9404c84, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

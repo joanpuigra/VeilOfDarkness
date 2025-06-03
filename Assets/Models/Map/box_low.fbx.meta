@@ -1,9 +1,39 @@
 fileFormatVersion: 2
-guid: 1dfcb3c5267924694ba9ec6572533e0a
+guid: 179da7d7fb9414392b78e44d31b8dce1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BC_Black
+    second: {fileID: 2100000, guid: d62a13dc4254b4ddc826fa3de9404c84, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BC_Gray
+    second: {fileID: 2100000, guid: bab82cbb1fd3c47dab2f0d3ce54171e8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BC_Orange
+    second: {fileID: 2100000, guid: 3b85aad502e9f4c06a41aee7b8e1a160, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BC_Red
+    second: {fileID: 2100000, guid: 4683b1e3195284c21979fb108a419a39, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BC_White
+    second: {fileID: 2100000, guid: 13cc4b8b54fe84fc580495447cd30dc7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BC_Yellow
+    second: {fileID: 2100000, guid: 16bb851b7bb134c739c86b8739da1aa7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
