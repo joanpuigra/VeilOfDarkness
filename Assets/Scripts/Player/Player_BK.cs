@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -51,6 +52,18 @@ public class Player_BK : MonoBehaviour
         HandleMovement();
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("The Player collided with an enemy.");
+        }
+        else if (other.gameObject.CompareTag("ShadowArea"))
+        {
+            Debug.Log("The Player entered a shadow area.");
+        }
+    }
+
     private void HandleLook()
     {
         Vector2 lookInput = lookAction.action.ReadValue<Vector2>();
@@ -59,7 +72,7 @@ public class Player_BK : MonoBehaviour
         transform.Rotate(Vector3.up, lookInput.x * cameraSensitivity);
 
         _verticalRotation -= lookInput.y * cameraSensitivity;
-        _verticalRotation = Mathf.Clamp(_verticalRotation, -80f, 80f);
+        _verticalRotation = Mathf.Clamp(_verticalRotation, -20f, 20f);
         cameraTransform.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
     }
 

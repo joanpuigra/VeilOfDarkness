@@ -12,20 +12,24 @@ public class RaycastShadow : MonoBehaviour
     private void Update()
     {
         Vector3 lightDirection = -directionalLight.forward;
-        SetShadowed(Physics.Raycast(
+        
+        bool targetHit = Physics.Raycast(
             transform.position,
             lightDirection,
             out RaycastHit hit,
             Mathf.Infinity,
             obstructionMask
-        ));
+        );
+        
+        isShadowed = targetHit;
+        lastHit = hit;
+        
+        SetShadowed(isShadowed);
     }
 
     private void SetShadowed(bool shadowed)
     {
-        Color color = characterRenderer.material.color;
-        color.a = shadowed ? 0.5f : 1f;
-        characterRenderer.material.color = color;
+        characterRenderer.enabled = !shadowed;
     }
 
     private void OnDrawGizmos()
