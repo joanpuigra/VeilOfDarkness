@@ -23,18 +23,8 @@ public class EnemyPatrol : MonoBehaviour
         // Check agent remaining distance
         if (!(navMeshAgent.remainingDistance < 0.5f)) return;
      
-        // Move to next waypoint
+        // Move to the next waypoint
         _currentWaypoint = (_currentWaypoint + 1) % waypoints.Length;
         navMeshAgent.SetDestination(waypoints[_currentWaypoint].position);
-        
-        // Walking
-        if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance)
-        {
-            //! Walking animation
-        }
-        else
-        {
-            //! Idle animation
-        }
     }
 }
