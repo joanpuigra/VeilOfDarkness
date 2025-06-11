@@ -274,7 +274,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "4a976ce5a22e4afdbe33b17b1cde454f"
+                    "m_Id": "d33e43a13bcc46dab6eb716af6e5528c"
                 },
                 "m_SlotId": 0
             }
@@ -663,7 +663,7 @@
     "m_Title": "Calculate Light (1 Light, 0 Shadow 0)",
     "m_Position": {
         "x": -6218.0,
-        "y": -2308.0
+        "y": -2307.3330078125
     }
 }
 
@@ -868,7 +868,7 @@
     "m_Title": "Min / Max Value",
     "m_Position": {
         "x": -5230.0,
-        "y": -2191.0
+        "y": -2190.666748046875
     }
 }
 
@@ -1070,8 +1070,8 @@
     "m_ObjectId": "4fff2c612dfb4563b4ee4c2b9c0efb62",
     "m_Title": "Shadow Color",
     "m_Position": {
-        "x": -4933.0,
-        "y": -3537.0
+        "x": -4933.33349609375,
+        "y": -3536.666748046875
     }
 }
 
@@ -1372,7 +1372,7 @@
     "m_Title": "Light Color",
     "m_Position": {
         "x": -4542.0,
-        "y": -2525.000244140625
+        "y": -2524.666748046875
     }
 }
 
@@ -1382,8 +1382,8 @@
     "m_ObjectId": "6d6f3a1494044fb7aa9cf421bd7ac053",
     "m_Title": "Calculate Light (1 Light, 0 Shadow 0)",
     "m_Position": {
-        "x": -5833.0,
-        "y": -3190.0
+        "x": -5833.33349609375,
+        "y": -3189.3330078125
     }
 }
 
@@ -1485,8 +1485,8 @@
     "m_ObjectId": "7ba04ca1c07e41e28fb85dfc9a7720ed",
     "m_Title": "Stylized Shadow",
     "m_Position": {
-        "x": -4881.0,
-        "y": -2197.0
+        "x": -4881.33349609375,
+        "y": -2196.666748046875
     }
 }
 
@@ -1862,7 +1862,7 @@
     "m_Title": "Shadow Color",
     "m_Position": {
         "x": -4246.0,
-        "y": -2808.000244140625
+        "y": -2808.0
     }
 }
 
@@ -1873,7 +1873,7 @@
     "m_Title": "Light Color",
     "m_Position": {
         "x": -4842.0,
-        "y": -3796.0
+        "y": -3795.3330078125
     }
 }
 

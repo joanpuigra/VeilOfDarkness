@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dcc90674ac36a9d4182cac64a5d2e7a9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - toonMaterial: {fileID: 2100000, guid: fe4bc078cb428c540af1487e92c7f380, type: 2}
+  - rampDay: {instanceID: 0}
+  - rampNight: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
