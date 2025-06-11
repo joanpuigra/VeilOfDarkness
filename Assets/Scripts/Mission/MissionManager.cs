@@ -6,7 +6,7 @@ public class MissionManager : MonoBehaviour
 
     [SerializeField] private Transform[] waypoints;
     [SerializeField] private GameObject missionCompleted;
-    [SerializeField] private RectTransform waypointUI;
+    [SerializeField] private Transform waypointUI;
     [SerializeField] private Transform player;
     
     private Transform target;

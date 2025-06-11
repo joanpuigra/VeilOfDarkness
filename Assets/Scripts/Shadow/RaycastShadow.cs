@@ -7,21 +7,20 @@ public class RaycastShadow : MonoBehaviour
     [Header("Light Settings")]
     [SerializeField] private Transform directionalLight;
     [SerializeField] private LayerMask shadowLayer;
-    [SerializeField] private GameObject characterRenderer;
-    [SerializeField] private GameObject shadowRenderer;
+    // [SerializeField] private GameObject shadowRenderer;
     
     [Header("Shadow Settings")]
-    [SerializeField] private Vector3 floorScale = new(1f, 0.01f, 1f);
-    [SerializeField] private Vector3 wallScale = new (0.01f, 1f, 1f);
+    // [SerializeField] private Vector3 floorScale = new(1f, 0.01f, 1f);
+    // [SerializeField] private Vector3 wallScale = new (0.01f, 1f, 1f);
+    [SerializeField] private Renderer targetRenderer;
+    [SerializeField] private Material shadowMaterial;
+    [SerializeField] private Material nonShadowMaterial;
+    
     [SerializeField] private float detectionRadius = 0.5f;
     [SerializeField] private float shadowTransition = 50f;
     
-    // [Header("Material Settings")]
-    // [SerializeField] private Renderer targetRenderer;
-    // [SerializeField] private Material[] newMaterial;
-    // private int _materialIndex;
-    
     private bool isShadowed;
+    private bool wasShadowed;
     private RaycastHit lastHit;
     private Vector3 cachedLightDirection;
 
@@ -34,20 +33,6 @@ public class RaycastShadow : MonoBehaviour
     {
         RayCastShadowUpdate();
     }
-
-    // private void SwapMaterial()
-    // {
-    //     if (!targetRenderer) return;
-    //     
-    //     Material[] materials = targetRenderer.materials;
-    //     if (_materialIndex < 0 || _materialIndex >= materials.Length)
-    //     {
-    //         Debug.LogWarning("Material index is out of range.");
-    //         return;
-    //     }
-    //     materials[_materialIndex] = newMaterial[_materialIndex];
-    //     targetRenderer.materials = materials;
-    // }
     
     private void RayCastShadowUpdate()
     {
@@ -62,11 +47,17 @@ public class RaycastShadow : MonoBehaviour
             100f,
             shadowLayer
         );
-        
+
         isShadowed = targetHit;
+        
+        if (isShadowed != wasShadowed)
+        {
+            SetShadowed(isShadowed);
+        }
+        
         lastHit = hit;
         
-        SetShadowed(isShadowed);
+        wasShadowed = isShadowed;
     }
 
     private void UpdateLightDirection()
@@ -76,32 +67,34 @@ public class RaycastShadow : MonoBehaviour
 
     private void SetShadowed(bool shadowed)
     {
-        if (!shadowRenderer) return;
+        if (!targetRenderer) return;
         
-        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, shadowLayer);
-        bool isOnWall = hits.Any(hit => hit.transform.position.x < transform.position.x);
+        targetRenderer.sharedMaterial = shadowed ? shadowMaterial : nonShadowMaterial;
         
-        UpdateCharacterScale(shadowed, isOnWall ? wallScale : floorScale);
+        
+        // Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, shadowLayer);
+        // bool isOnWall = hits.Any(hit => hit.transform.position.x < transform.position.x);
+        // UpdateCharacterScale(shadowed, isOnWall ? wallScale : floorScale);
     }
     
-    private void UpdateCharacterScale(bool shadowed, Vector3 shadowScale)
-    {
-        if (!shadowRenderer) return;
-        
-        Vector3 targetScale = shadowed ? shadowScale : Vector3.zero;
-        
-        shadowRenderer.transform.localScale = Vector3.Lerp(
-            shadowRenderer.transform.localScale,
-            targetScale,
-            Time.deltaTime * shadowTransition
-        );
-        
-        characterRenderer.transform.localScale = Vector3.Lerp(
-            characterRenderer.transform.localScale,
-            shadowed ? Vector3.zero : Vector3.one,
-            Time.deltaTime * shadowTransition
-        );
-    }
+    // private void UpdateCharacterScale(bool shadowed, Vector3 shadowScale)
+    // {
+    //     if (!shadowRenderer) return;
+    //     
+    //     Vector3 targetScale = shadowed ? shadowScale : Vector3.zero;
+    //     
+    //     shadowRenderer.transform.localScale = Vector3.Lerp(
+    //         shadowRenderer.transform.localScale,
+    //         targetScale,
+    //         Time.deltaTime * shadowTransition
+    //     );
+    //     
+    //     // characterRenderer.transform.localScale = Vector3.Lerp(
+    //     //     characterRenderer.transform.localScale,
+    //     //     shadowed ? Vector3.zero : Vector3.one,
+    //     //     Time.deltaTime * shadowTransition
+    //     // );
+    // }
 
     private void OnDrawGizmos()
     {
@@ -117,11 +110,11 @@ public class RaycastShadow : MonoBehaviour
             Gizmos.DrawSphere(lastHit.point, 0.1f);
         }
         
-        // Draw the detection wall
-        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, shadowLayer);
-        bool leftDetected = hits.Any(hit => hit.transform.position.x < transform.position.x);
-
-        Gizmos.color = leftDetected ? Color.red : Color.green;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        // // Draw the detection wall
+        // Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, shadowLayer);
+        // bool leftDetected = hits.Any(hit => hit.transform.position.x < transform.position.x);
+        //
+        // Gizmos.color = leftDetected ? Color.red : Color.green;
+        // Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }
