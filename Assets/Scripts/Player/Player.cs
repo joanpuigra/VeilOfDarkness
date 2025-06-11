@@ -69,7 +69,13 @@ public class Player : MonoBehaviour
 
     private void UpdateWalkingState()
     {
+        // if (_isWalking == _previousWalking) return;
+        // _animator.SetBool(isWalking, _isWalking);
+        // _previousWalking = _isWalking;
+        
+        _isWalking = _moveInput.sqrMagnitude > 0.1f;
         if (_isWalking == _previousWalking) return;
+        
         _animator.SetBool(isWalking, _isWalking);
         _previousWalking = _isWalking;
     }
